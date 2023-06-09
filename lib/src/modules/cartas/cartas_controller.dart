@@ -2,7 +2,7 @@ import 'package:app_mari/database/db_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class SettingsController extends ChangeNotifier {
+class CartasController extends ChangeNotifier {
   List<dynamic> cartas = [];
   late FirebaseFirestore db;
   final firestore = FirebaseFirestore.instance;

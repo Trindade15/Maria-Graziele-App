@@ -2,10 +2,10 @@ import 'package:app_mari/configs/app_setting.dart';
 import 'package:app_mari/configs/notification_service.dart';
 import 'package:app_mari/firebase_messaging/firebase_messaging.dart';
 import 'package:app_mari/src/modules/auth/auth_module.dart';
+import 'package:app_mari/src/modules/cartas/cartas_module.dart';
 import 'package:app_mari/src/modules/favorite/favorite_module.dart';
 import 'package:app_mari/src/modules/home/home_module.dart';
 import 'package:app_mari/src/modules/index/index_module.dart';
-import 'package:app_mari/src/modules/settings/settings_module.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class AppModule extends Module {
@@ -30,7 +30,7 @@ class AppModule extends Module {
             module: FavoriteModule(), transition: TransitionType.fadeIn),
         ModuleRoute(
           '/settings',
-          module: SettingsModule(),
+          module: CartasModule(),
           transition: TransitionType.size,
           duration: const Duration(seconds: 2),
         ),

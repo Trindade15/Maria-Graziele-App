@@ -6,17 +6,17 @@ import 'package:flutter_triple/flutter_triple.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:app_mari/src/helpers/size_extensions.dart';
-import 'package:app_mari/src/modules/settings/settings_store.dart';
+import 'package:app_mari/src/modules/cartas/cartas_store.dart';
 
-class SettingsPage extends StatefulWidget {
-  const SettingsPage();
+class CartasListaPage extends StatefulWidget {
+  const CartasListaPage();
 
   @override
-  State<SettingsPage> createState() => _SettingsPageState();
+  State<CartasListaPage> createState() => _CartasListaPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
-  final store = Modular.get<SettingsStore>();
+class _CartasListaPageState extends State<CartasListaPage> {
+  final store = Modular.get<CartasStore>();
 
   @override
   void initState() {

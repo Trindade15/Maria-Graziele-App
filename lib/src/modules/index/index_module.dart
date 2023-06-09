@@ -3,7 +3,7 @@ import 'package:app_mari/src/modules/favorite/favorite_module.dart';
 import 'package:app_mari/src/modules/home/home_module.dart';
 import 'package:app_mari/src/modules/index/index_page.dart';
 import 'package:app_mari/src/modules/music/music_module.dart';
-import 'package:app_mari/src/modules/settings/settings_module.dart';
+import 'package:app_mari/src/modules/cartas/cartas_module.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class IndexModule extends Module {
@@ -21,7 +21,7 @@ class IndexModule extends Module {
           children: [
             ModuleRoute('/home-module', module: HomeModule()),
             ModuleRoute('/favorite-module', module: FavoriteModule()),
-            ModuleRoute('/settings-module', module: SettingsModule()),
+            ModuleRoute('/settings-module', module: CartasModule()),
             ModuleRoute('/music-module', module: MusicModule()),
           ]
         ),

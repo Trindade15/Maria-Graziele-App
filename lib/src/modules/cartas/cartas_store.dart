@@ -1,11 +1,11 @@
-import 'package:app_mari/src/modules/settings/settings_controller.dart';
+import 'package:app_mari/src/modules/cartas/cartas_controller.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 
-class SettingsStore
+class CartasStore
     extends NotifierStore<ErrorSettingsState, SuccessSettingsState> {
-  final controller = Modular.get<SettingsController>();
-  SettingsStore() : super(SuccessSettingsState([]));
+  final controller = Modular.get<CartasController>();
+  CartasStore() : super(SuccessSettingsState([]));
 
   getCartas() async {
     setLoading(true);

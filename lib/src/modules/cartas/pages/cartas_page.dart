@@ -1,12 +1,12 @@
 import 'package:app_mari/src/helpers/size_extensions.dart';
-import 'package:app_mari/src/modules/settings/pages/settings_page.dart';
+import 'package:app_mari/src/modules/cartas/pages/cartas_lista_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class LetterPage extends StatelessWidget {
+class CartasPage extends StatelessWidget {
   final CartaInterface carta;
-  const LetterPage({required this.carta});
+  const CartasPage({required this.carta});
 
   @override
   Widget build(BuildContext context) {
