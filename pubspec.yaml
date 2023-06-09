@@ -61,6 +61,7 @@ dependencies:
   firebase_database: ^10.2.2
   firebase_ui_firestore: ^1.5.2
   firebase_analytics: ^10.4.2
+  validatorless: ^1.2.3
   
 
 

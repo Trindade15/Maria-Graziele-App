@@ -1,4 +1,3 @@
-import 'package:app_mari/configs/app_setting.dart';
 import 'package:app_mari/src/ui/styles/colors_app.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +31,7 @@ class _IndexPageState extends State<IndexPage> {
           Icon(Icons.home, color: Colors.black54),
           Icon(Icons.favorite, color: Colors.black54),
           Icon(Icons.mail_outline_outlined, color: Colors.black54),
-          Icon(Icons.library_music_rounded, color: Colors.black54),
+          Icon(Icons.settings, color: Colors.black54),
         ],
       ),
     );
@@ -47,10 +46,10 @@ class _IndexPageState extends State<IndexPage> {
         Modular.to.navigate('/favorite-module/');
         break;
       case 2:
-        Modular.to.navigate('/settings-module/');
+        Modular.to.navigate('/cartas-module/');
         break;
         case 3:
-        Modular.to.navigate('/music-module/');
+        Modular.to.navigate('/settings-module/');
         break;
       default:
     }

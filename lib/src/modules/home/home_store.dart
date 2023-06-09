@@ -19,9 +19,6 @@ class HomeStore extends NotifierStore<ErrorHomeState, SuccessHomeState> {
 }
 
 abstract class HomeState {}
-
-class InitialHomeState extends HomeState {}
-
 class SuccessHomeState extends HomeState {
   final List<Map> images;
   SuccessHomeState(this.images);

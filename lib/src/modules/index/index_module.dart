@@ -1,4 +1,5 @@
 import 'package:app_mari/configs/app_setting.dart';
+import 'package:app_mari/src/modules/settings/settings_module.dart';
 import 'package:app_mari/src/modules/favorite/favorite_module.dart';
 import 'package:app_mari/src/modules/home/home_module.dart';
 import 'package:app_mari/src/modules/index/index_page.dart';
@@ -21,7 +22,8 @@ class IndexModule extends Module {
           children: [
             ModuleRoute('/home-module', module: HomeModule()),
             ModuleRoute('/favorite-module', module: FavoriteModule()),
-            ModuleRoute('/settings-module', module: CartasModule()),
+            ModuleRoute('/cartas-module', module: CartasModule()),
+            ModuleRoute('/settings-module', module: SettingsModule()),
             ModuleRoute('/music-module', module: MusicModule()),
           ]
         ),

@@ -57,22 +57,6 @@ class _HomePageState extends State<HomePage> {
                 height: context.screenHeight - 60,
                 width: double.infinity,
               ),
-              Positioned(
-                top: 42,
-                right: 8,
-                child: IconButton(
-                  tooltip: 'Sair',
-                  onPressed: () {
-                    authController.logout();
-                    controller.images.clear();
-                    controller.refs.clear();
-                  },
-                  icon: const Icon(
-                    Icons.logout_outlined,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
               ScopedBuilder(
                 store: homeStore,
                 onError: (context, error) {

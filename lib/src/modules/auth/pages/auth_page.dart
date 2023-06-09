@@ -1,8 +1,10 @@
 import 'package:app_mari/configs/app_setting.dart';
+import 'package:app_mari/src/helpers/messages.dart';
 import 'package:app_mari/src/helpers/size_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:validatorless/validatorless.dart';
 import '../auth_controller.dart';
 
 class AuthPage extends StatefulWidget {
@@ -86,6 +88,10 @@ class _AuthPageState extends State<AuthPage> {
                             border: OutlineInputBorder(),
                           ),
                           style: const TextStyle(color: Colors.white),
+                          validator: Validatorless.multiple([
+                            Validatorless.email('E-mail Inválido'),
+                            Validatorless.required('E-mail Obrigatório'),
+                          ]),
                         ),
                         const SizedBox(height: 30),
                         TextFormField(
@@ -95,6 +101,13 @@ class _AuthPageState extends State<AuthPage> {
                             border: OutlineInputBorder(),
                           ),
                           style: const TextStyle(color: Colors.white),
+                          validator: Validatorless.multiple([
+                            Validatorless.required('Senha Obrigatória'),
+                            Validatorless.min(
+                              6,
+                              'Senha precisa ter pelo menos 6 caracteres',
+                            )
+                          ]),
                         ),
                         const SizedBox(height: 35),
                         SizedBox(
@@ -106,7 +119,16 @@ class _AuthPageState extends State<AuthPage> {
                                 Color.fromARGB(255, 61, 180, 67),
                               ),
                             ),
-                            onPressed: () async => await controller.login(context),
+                            onPressed: () {
+                              var formValid =
+                                  controller.formKey.currentState?.validate() ??
+                                      false;
+                              if (formValid) {
+                                controller.login(context);
+                              } else {
+                                context.showWarning('Formulário Inválido', context);
+                              }
+                            },
                             child: const Text(
                               'Entrar',
                               style: TextStyle(fontSize: 16),

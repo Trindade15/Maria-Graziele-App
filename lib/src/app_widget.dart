@@ -21,6 +21,10 @@ class _AppWidgetState extends State<AppWidget> {
     borderSide: const BorderSide(color: Colors.white),
   );
 
+  static final errorBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(20),
+      borderSide: const BorderSide(color: Colors.white));
+
   @override
   void initState() {
     Modular.get<ServiceFirebaseMessaging>().initilize();
@@ -48,6 +52,12 @@ class _AppWidgetState extends State<AppWidget> {
           border: _defaultInputBorder,
           enabledBorder: _defaultInputBorder,
           focusedBorder: _defaultInputBorder,
+          errorStyle: const TextStyle(
+            backgroundColor: Colors.black26,
+            color: Color.fromARGB(255, 253, 109, 96),
+          ),
+          errorBorder: errorBorder,
+          focusedErrorBorder: errorBorder,
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(

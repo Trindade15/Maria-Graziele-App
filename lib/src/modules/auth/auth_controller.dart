@@ -1,20 +1,24 @@
+import 'dart:io';
 
 import 'package:app_mari/configs/app_setting.dart';
 import 'package:app_mari/database/db_firestore.dart';
-import 'package:app_mari/firebase_messaging/firebase_messaging.dart';
 import 'package:app_mari/src/helpers/messages.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AuthController extends ChangeNotifier {
   final _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseStorage storage = FirebaseStorage.instance;
   late FirebaseFirestore db;
   final name = TextEditingController();
   final email = TextEditingController();
   final senha = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  String? avatarUrl = 'not-found';
 
   startRepository() async {
     await _startFirestore();
@@ -28,18 +32,7 @@ class AuthController extends ChangeNotifier {
     var senha = this.senha.text.trim();
     var email = this.email.text.trim();
     try {
-      UserCredential userCredential =
-          await _firebaseAuth.signInWithEmailAndPassword(
-        email: email,
-        password: senha,
-      );
-      if (userCredential.user != null) {
-        await Modular.get<AppSetting>().setUsuario(userCredential);
-        Modular.to.pushNamed('/home-module/');
-        this.email.clear();
-        this.senha.clear();
-
-      }
+      await signInWithEmail(email, senha);
     } on FirebaseAuthException catch (e) {
       this.email.clear();
       this.senha.clear();
@@ -54,6 +47,20 @@ class AuthController extends ChangeNotifier {
     notifyListeners();
   }
 
+  signInWithEmail(String email, String senha) async {
+    UserCredential userCredential =
+        await _firebaseAuth.signInWithEmailAndPassword(
+      email: email,
+      password: senha,
+    );
+    if (userCredential.user != null) {
+      await Modular.get<AppSetting>().setUsuario(userCredential);
+      Modular.to.pushNamed('/home-module/');
+      this.email.clear();
+      this.senha.clear();
+    }
+  }
+
   Future<void> registerUser(BuildContext context) async {
     try {
       UserCredential userCredential =
@@ -64,11 +71,13 @@ class AuthController extends ChangeNotifier {
 
       if (userCredential.user != null) {
         await userCredential.user!.updateDisplayName(name.text);
+        await userCredential.user!.updatePhotoURL(avatarUrl);
         await db.collection('usuarios').doc().set(
           {
             'id': userCredential.user!.uid,
             'nome': name.text,
             'email': userCredential.user!.email,
+            'avatarUrl': 'not-found',
           },
         );
         await _firebaseAuth
