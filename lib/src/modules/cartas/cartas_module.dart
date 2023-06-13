@@ -1,6 +1,7 @@
 
 
 
+import 'package:app_mari/configs/app_setting.dart';
 import 'package:app_mari/src/modules/cartas/cartas_store.dart';
 import 'package:app_mari/src/modules/cartas/pages/cartas_lista_page.dart';
 import 'package:app_mari/src/modules/cartas/pages/cartas_page.dart';
@@ -12,6 +13,7 @@ class CartasModule extends Module {
   @override
   final List<Bind> binds = [
     Bind.lazySingleton((i) => CartasController()),
+    Bind.lazySingleton((i) => AppSetting()),
     Bind.lazySingleton((i) => CartasStore())
   ];
 

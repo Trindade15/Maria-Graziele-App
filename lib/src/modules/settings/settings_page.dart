@@ -60,7 +60,6 @@ class _SettingsPageState extends State<SettingsPage> {
           );
         },
         onState: (context, SuccessSettingsState state) {
-          print('State: ${state.usuario}');
           var usuario = state.usuario;
           return ListView(
             children: [
@@ -72,6 +71,37 @@ class _SettingsPageState extends State<SettingsPage> {
                     Image.asset(
                       'assets/images/background-nature.jpg',
                       fit: BoxFit.cover,
+                    ),
+                    Positioned(
+                      top: 55,
+                      left: context.screenWidth * .4,
+                      child: Row(
+                        children: [
+                          Visibility(
+                            visible: controller.uploading,
+                            child: Text(
+                              '${controller.total.round()}% enviado',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                backgroundColor: Colors.black26,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 15),
+                          Visibility(
+                            visible: controller.uploading,
+                            child: const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 3,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     Positioned(
                       top: 100,
@@ -94,9 +124,15 @@ class _SettingsPageState extends State<SettingsPage> {
                                   child: Visibility(
                                     visible:
                                         usuario['avatarUrl'] == 'not-found',
-                                    replacement: Image.file(
-                                      File(state.usuario['avatarUrl']),
+                                    replacement: Image.network(
+                                      state.usuario['avatarUrl'],
                                       fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Image.asset(
+                                          'assets/images/image-found.jpg',
+                                        );
+                                      },
                                     ),
                                     child: const Icon(
                                       Icons.person,
@@ -108,7 +144,8 @@ class _SettingsPageState extends State<SettingsPage> {
                               ),
                               const SizedBox(width: 5),
                               TextButton(
-                                onPressed: () {},
+                                onPressed: () async =>
+                                    await controller.saveAvatar(),
                                 child: Text(
                                   'Trocar avatar',
                                   style: GoogleFonts.aBeeZee(
@@ -147,12 +184,12 @@ class _SettingsPageState extends State<SettingsPage> {
               ListTile(
                 leading: const Icon(Icons.favorite),
                 title: Text('Favorite images', style: GoogleFonts.aBeeZee()),
-                onTap: () {},
+                onTap: () => Modular.to.navigate('/favorite-module'),
               ),
               ListTile(
                 leading: const Icon(Icons.email_rounded),
                 title: Text('Letter', style: GoogleFonts.aBeeZee()),
-                onTap: () {},
+                onTap: () => Modular.to.navigate('/cartas-module/'),
               ),
               Divider(color: Colors.grey[400]),
               ListTile(

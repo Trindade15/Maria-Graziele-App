@@ -46,12 +46,16 @@ class HomeController extends ChangeNotifier {
   }
 
   Future<void> saveDataBase(TaskSnapshot snapshot, Map usuario) async {
+    var data = DateTime.now();
+    var date = '${data.day}-${data.month}-${data.year}';
     await db.collection('images').doc().set(
       {
         'imagePath': await snapshot.ref.getDownloadURL(),
         'fullPath': snapshot.ref.fullPath,
         'isFavorite': '0',
         'usuarioId': usuario['id'],
+        'date': date,
+        'hour': '${data.hour}:${data.minute}',
       },
     );
   }

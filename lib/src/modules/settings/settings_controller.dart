@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:app_mari/configs/app_setting.dart';
 import 'package:app_mari/database/db_firestore.dart';
+import 'package:app_mari/src/modules/settings/settings_store.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,8 @@ class SettingsController extends ChangeNotifier {
         .where('id', isEqualTo: usuario['id'])
         .get();
     var user = snapshot.docs.first.data();
+    user['docId'] = snapshot.docs.first.id;
+    avatar = user;
     return user;
   }
 
@@ -47,7 +50,9 @@ class SettingsController extends ChangeNotifier {
   }
 
   Future<void> saveDataBase(TaskSnapshot snapshot, Map usuario) async {
-    await db.collection('usuarios').doc(usuario['id']).update(
+    print('UsuarioId: ${usuario['id']}');
+    print('URL: ${await snapshot.ref.getDownloadURL()}');
+    await db.collection('usuarios').doc(avatar['docId']).update(
       {'avatarUrl': await snapshot.ref.getDownloadURL()},
     );
   }
@@ -70,8 +75,9 @@ class SettingsController extends ChangeNotifier {
               ref = snapshot.ref;
               uploading = false;
             });
+            await Modular.get<SettingsStore>().buscarUsuario();
           }
-        }); 
+        });
       }
     } catch (e) {
       print('Error: $e');

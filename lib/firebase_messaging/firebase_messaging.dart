@@ -26,7 +26,6 @@ class ServiceFirebaseMessaging {
   getTokenFirebase() async {
     String? token = await FirebaseMessaging.instance.getToken();
     var snapshot = await firestore.collection('token').get();
-    print('Snapshot: ${snapshot.docs.length}');
     if (snapshot.docs.isNotEmpty) {
       Map tokenDatabase = snapshot.docs.first.data();
       tokenDatabase['id'] = snapshot.docs.first.id;
@@ -62,7 +61,6 @@ class ServiceFirebaseMessaging {
     FirebaseMessaging.onMessage.listen((message) {
       RemoteNotification? notification = message.notification;
       AndroidNotification? android = message.notification?.android;
-
       if (notification != null && android != null) {
         _notificationService.showNotification(
           CustomNotification(

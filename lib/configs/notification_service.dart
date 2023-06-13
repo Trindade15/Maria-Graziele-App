@@ -70,23 +70,25 @@ class NotificationService {
       importance: Importance.max,
       subText: 'Você é lindaaa✨',
       priority: Priority.max,
-      timeoutAfter: 0,
       visibility: NotificationVisibility.public,
       enableVibration: true,
-      category: AndroidNotificationCategory.alarm,
+      playSound: true,
+      enableLights: true,
+      category: AndroidNotificationCategory.social,
       color: ColorsApp.instance.primary,
     );
 
     localNotificationsPlugin.zonedSchedule(
-        notification.id,
-        notification.title,
-        notification.body,
-        tz.TZDateTime.from(date, tz.local),
-        NotificationDetails(android: androidDetails),
-        payload: notification.payload,
-        androidAllowWhileIdle: true,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime);
+      notification.id,
+      notification.title,
+      notification.body,
+      tz.TZDateTime.from(date, tz.local),
+      NotificationDetails(android: androidDetails),
+      payload: notification.payload,
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+    );
   }
 
   checkForNotifications() async {

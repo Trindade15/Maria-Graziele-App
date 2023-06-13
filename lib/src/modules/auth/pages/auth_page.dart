@@ -50,26 +50,6 @@ class _AuthPageState extends State<AuthPage> {
                 ),
               ),
             ),
-            // Positioned(
-            //   top: 135,
-            //   child: Padding(
-            //     padding: const EdgeInsets.only(left: 16),
-            //     child: SizedBox(
-            //       width: context.screenWidth,
-            //       child: Text(
-            //         GlobalText.tituloLogin.texto,
-            //         style: GoogleFonts.aBeeZee(
-            //           color: Colors.white,
-            //           height: 1.5,
-            //           fontSize: 16,
-            //           fontWeight: FontWeight.w600,
-            //           backgroundColor: Colors.black12,
-            //         ),
-            //         softWrap: true,
-            //       ),
-            //     ),
-            //   ),
-            // ),
             Center(
               child: Form(
                 key: controller.formKey,

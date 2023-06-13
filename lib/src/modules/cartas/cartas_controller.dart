@@ -1,6 +1,8 @@
+import 'package:app_mari/configs/app_setting.dart';
 import 'package:app_mari/database/db_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class CartasController extends ChangeNotifier {
   List<dynamic> cartas = [];
@@ -28,8 +30,10 @@ class CartasController extends ChangeNotifier {
   }
 
   Future<List<dynamic>> getCartas() async {
-    var snapshot = await firestore.collection('cartas').get();
-    for (var doc in snapshot.docs) {
+     await Modular.get<AppSetting>().startSettings();
+    var usuario = await Modular.get<AppSetting>().readLocale();
+    var snapshot = await firestore.collection('cartas').where('usuarioId', isEqualTo: usuario['id']).get();
+    for (var doc in snapshot.docs) { 
       var carta = doc.data();
       carta['id'] = doc.id;
       cartas.add(carta);

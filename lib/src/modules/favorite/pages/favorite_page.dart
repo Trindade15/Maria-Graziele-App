@@ -1,5 +1,6 @@
 import 'package:app_mari/src/helpers/size_extensions.dart';
 import 'package:app_mari/src/modules/favorite/favorite_store.dart';
+import 'package:app_mari/src/modules/home/components/home_image_detail.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -7,7 +8,7 @@ import 'package:flutter_triple/flutter_triple.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-import '../home/components/layout_image.dart';
+import '../../home/components/layout_image.dart';
 
 class FavoritePage extends StatefulWidget {
   const FavoritePage({super.key});
@@ -74,7 +75,19 @@ class _FavoritePageState extends State<FavoritePage> {
                 ),
                 child: LayoutImage(
                   images: favorites,
-                  onPressed: (index) {},
+                  onPressed: (index) {
+                    var detail = ImageDetailInterface(
+                      tag: index.toString(),
+                      imagePath: favorites[index]['imagePath'],
+                      fullPath: favorites[index]['fullPath'],
+                      isFavorite: favorites[index]['isFavorite'].toString(),
+                      id: favorites[index]['id'] ?? '',
+                      usuarioId: favorites[index]['usuarioId'],
+                      date: favorites[index]['date'],
+                      hour: favorites[index]['hour'],
+                    );
+                    Modular.to.pushNamed('./favorite-detail', arguments: detail);
+                  },
                 ),
               ),
             );

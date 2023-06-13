@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:app_mari/configs/app_setting.dart';
 import 'package:app_mari/database/db_firestore.dart';
 import 'package:app_mari/src/helpers/messages.dart';
@@ -8,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:image_picker/image_picker.dart';
 
 class AuthController extends ChangeNotifier {
   final _firebaseAuth = FirebaseAuth.instance;

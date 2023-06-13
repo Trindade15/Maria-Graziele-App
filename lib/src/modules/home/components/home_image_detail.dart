@@ -3,8 +3,9 @@ import 'package:app_mari/src/ui/styles/colors_app.dart';
 import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
+
+import '../../../components/open_image_component.dart';
 
 class HomeImageDetail extends StatefulWidget {
   final ImageDetailInterface imageDetail;
@@ -65,42 +66,7 @@ class _HomeImageDetailState extends State<HomeImageDetail> {
           ),
         ],
       ),
-      body: Center(
-        child: Hero(
-          tag: widget.imageDetail.tag,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, bottom: 5),
-                  child: Text(
-                    '${widget.imageDetail.date} - ${widget.imageDetail.hour}',
-                    style:
-                        GoogleFonts.aBeeZee(color: Colors.black, fontSize: 13),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: SizedBox(
-                      child: Image.network(
-                        widget.imageDetail.imagePath,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Image.asset('assets/images/image-found.jpg');
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+      body: OpenImageComponent(detail: widget.imageDetail),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 25, right: 10),
         child: FloatingActionButton(
@@ -137,7 +103,7 @@ class _HomeImageDetailState extends State<HomeImageDetail> {
   }
 
   void addImageFavorite() {
-    widget.imageDetail.controller.favoriteImage(widget.imageDetail);
+    widget.imageDetail.controller!.favoriteImage(widget.imageDetail);
   }
 
   Future<void> showSimpleDialog() async {
@@ -160,7 +126,7 @@ class _HomeImageDetailState extends State<HomeImageDetail> {
               ),
               onPressed: () {
                 setState(() {
-                  widget.imageDetail.controller.deleteImage(widget.imageDetail);
+                  widget.imageDetail.controller!.deleteImage(widget.imageDetail);
                 });
               },
             ),
@@ -188,7 +154,7 @@ class ImageDetailInterface {
   final String hour;
   final String usuarioId;
   final String id;
-  final HomeController controller;
+  final HomeController? controller;
   String isFavorite;
   ImageDetailInterface({
     required this.tag,
@@ -198,7 +164,7 @@ class ImageDetailInterface {
     required this.usuarioId,
     required this.date,
     required this.hour,
-    required this.controller,
+    this.controller,
     required this.id,
   });
 

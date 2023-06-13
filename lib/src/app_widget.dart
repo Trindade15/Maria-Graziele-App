@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import 'package:app_mari/configs/notification_service.dart';
 import 'package:app_mari/firebase_messaging/firebase_messaging.dart';
+import 'package:app_mari/main.dart';
 import 'package:app_mari/src/ui/styles/colors_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+
 
 class AppWidget extends StatefulWidget {
   const AppWidget({super.key});
@@ -12,6 +17,8 @@ class AppWidget extends StatefulWidget {
 }
 
 class _AppWidgetState extends State<AppWidget> {
+  late final StreamSubscription<InternetConnectionStatus> listener;
+
   checkNotifications() async {
     await context.watch<NotificationService>().checkForNotifications();
   }
@@ -27,8 +34,19 @@ class _AppWidgetState extends State<AppWidget> {
 
   @override
   void initState() {
+    listener = InternetConnectionChecker().onStatusChange.listen((status) {
+      final notifier = ConnectionNotifier.of(context);
+      notifier.value =
+          status == InternetConnectionStatus.connected ? true : false;
+    });
     Modular.get<ServiceFirebaseMessaging>().initilize();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    listener.cancel();
+    super.dispose();
   }
 
   @override
