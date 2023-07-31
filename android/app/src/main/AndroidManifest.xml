@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.com.sambli.tech.app_mari" xmlns:tools="http://schemes.android.com/tools">
    <application
-        android:label="Princess"
+        android:label="Princess Mari"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

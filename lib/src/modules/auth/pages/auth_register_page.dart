@@ -117,15 +117,22 @@ class _AuthRegisterPageState extends State<AuthRegisterPage> {
                           ),
                         ),
                         onPressed: () async {
-                          var formValid =
-                              formKey.currentState?.validate() ?? false;
+                          var formValid = formKey.currentState?.validate() ?? false;
                           if (formValid) {
                             await controller.registerUser(context);
                           } else {
                             context.showWarning('Formulário Inválido', context);
                           }
                         },
-                        child: const Text('Cadastrar'),
+                        child: Visibility(
+                          visible: !controller.loading,
+                          replacement: const SizedBox(
+                            height: 25,
+                            width: 25,
+                            child: CircularProgressIndicator(color: Colors.white),
+                          ),
+                          child: const Text('Cadastrar'),
+                        ),
                       ),
                     ),
                   ],

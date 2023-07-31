@@ -1,8 +1,11 @@
+import 'package:app_mari/src/helpers/size_extensions.dart';
 import 'package:app_mari/src/modules/home/controller/home_controller.dart';
 import 'package:app_mari/src/ui/styles/colors_app.dart';
 import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../components/open_image_component.dart';
@@ -16,8 +19,19 @@ class HomeImageDetail extends StatefulWidget {
 }
 
 class _HomeImageDetailState extends State<HomeImageDetail> {
+  final commentController = TextEditingController();
+  final changeText = ValueNotifier<String>('Ex: Essa foto é muito bonita');
   bool get isFavoriteParse {
     return widget.imageDetail.isFavorite == '0' ? false : true;
+  }
+
+  @override
+  void initState() {
+    if (widget.imageDetail.comentario != null) {
+      commentController.text = widget.imageDetail.comentario!;
+      changeText.value = widget.imageDetail.comentario!;
+    }
+    super.initState();
   }
 
   @override
@@ -64,11 +78,50 @@ class _HomeImageDetailState extends State<HomeImageDetail> {
             onPressed: () => showSimpleDialog(),
             icon: Icon(Icons.delete_rounded, color: context.colors.secondary),
           ),
+          IconButton(
+            onPressed: () => addComment(),
+            icon: Icon(
+              Icons.maps_ugc,
+              color: context.colors.secondary,
+              //size: 27,
+            ),
+          ),
         ],
       ),
-      body: OpenImageComponent(detail: widget.imageDetail),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            OpenImageComponent(detail: widget.imageDetail),
+            Visibility(
+              visible: widget.imageDetail.comentario != null &&
+                  widget.imageDetail.comentario != '',
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Comment:',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      widget.imageDetail.comentario ?? '',
+                      style: GoogleFonts.aBeeZee(),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 25, right: 10),
+        padding: const EdgeInsets.only(bottom: 20, right: 10),
         child: FloatingActionButton(
           backgroundColor: Colors.blue[50],
           elevation: 5,
@@ -95,6 +148,92 @@ class _HomeImageDetailState extends State<HomeImageDetail> {
         ),
       ),
     );
+  }
+
+  addComment() {
+    var outilineBorder = OutlineInputBorder(
+      borderSide: const BorderSide(color: Colors.grey),
+      borderRadius: BorderRadius.circular(20),
+    );
+    return showBarModalBottomSheet(
+      backgroundColor: context.colors.primary,
+      context: context,
+      builder: (context) {
+        return Container(
+          padding: const EdgeInsets.only(left: 10, top: 20, right: 10),
+          height: context.screenHeight * .6,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Text(
+                  'Write a comment',
+                  style: GoogleFonts.aBeeZee(fontSize: 16, color: Colors.black),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: TextFormField(
+                    controller: commentController,
+                    onChanged: (value) {
+                      setState(() {
+                        changeText.value = value;
+                      });
+                    },
+                    maxLength: 300,
+                    decoration: InputDecoration(
+                      label: Text(
+                        'Comment',
+                        style: TextStyle(
+                          color: Colors.grey[700],
+                        ),
+                      ),
+                      enabledBorder: outilineBorder,
+                      disabledBorder: outilineBorder,
+                      focusedBorder: outilineBorder,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  child: ValueListenableBuilder(
+                    valueListenable: changeText,
+                    builder: (context, text, child) => Text(
+                      text,
+                      style: GoogleFonts.aBeeZee(color: Colors.grey[600]),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Visibility(
+                  visible: commentController.text.isNotEmpty,
+                  child: SizedBox(
+                    width: 100,
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStatePropertyAll(context.colors.secondary),
+                      ),
+                      onPressed: () async {
+                        await widget.imageDetail.controller!.addComentario(
+                          widget.imageDetail,
+                          commentController.text,
+                        );
+                      },
+                      child: const Icon(Icons.bookmark_add_outlined),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    ).then((value) {
+      setState(() {
+        if (widget.imageDetail.comentario == null) commentController.clear();
+        changeText.value =
+            widget.imageDetail.comentario ?? 'Ex: Essa foto é muito bonita';
+      });
+    });
   }
 
   void shareImage() async {
@@ -126,7 +265,8 @@ class _HomeImageDetailState extends State<HomeImageDetail> {
               ),
               onPressed: () {
                 setState(() {
-                  widget.imageDetail.controller!.deleteImage(widget.imageDetail);
+                  widget.imageDetail.controller!
+                      .deleteImage(widget.imageDetail);
                 });
               },
             ),
@@ -152,21 +292,22 @@ class ImageDetailInterface {
   final String fullPath;
   final String date;
   final String hour;
+  final String? comentario;
   final String usuarioId;
   final String id;
   final HomeController? controller;
   String isFavorite;
-  ImageDetailInterface({
-    required this.tag,
-    required this.imagePath,
-    required this.fullPath,
-    required this.isFavorite,
-    required this.usuarioId,
-    required this.date,
-    required this.hour,
-    this.controller,
-    required this.id,
-  });
+  ImageDetailInterface(
+      {required this.tag,
+      required this.imagePath,
+      required this.fullPath,
+      required this.isFavorite,
+      required this.usuarioId,
+      required this.date,
+      required this.hour,
+      this.controller,
+      required this.id,
+      required this.comentario});
 
   @override
   String toString() =>

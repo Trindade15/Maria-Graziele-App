@@ -22,6 +22,7 @@ class CartasPage extends StatelessWidget {
           ),
           Positioned(
             top: 50,
+            left: 10,
             child: Text(
               carta.titulo ?? '',
               style: GoogleFonts.aladin(color: Colors.white, fontSize: 25),

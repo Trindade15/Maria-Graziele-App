@@ -26,6 +26,9 @@ class SettingsController extends ChangeNotifier {
         .collection('usuarios')
         .where('id', isEqualTo: usuario['id'])
         .get();
+    for (var usuario in snapshot.docs) {
+      print('Usuario data: ${usuario.data()}');
+    }
     var user = snapshot.docs.first.data();
     user['docId'] = snapshot.docs.first.id;
     avatar = user;

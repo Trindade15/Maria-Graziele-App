@@ -16,6 +16,7 @@ class AuthController extends ChangeNotifier {
   final senha = TextEditingController();
   final formKey = GlobalKey<FormState>();
   String? avatarUrl = 'not-found';
+  bool loading = false;
 
   startRepository() async {
     await _startFirestore();
@@ -26,6 +27,8 @@ class AuthController extends ChangeNotifier {
   }
 
   login(BuildContext context) async {
+    loading = true;
+    notifyListeners();
     var senha = this.senha.text.trim();
     var email = this.email.text.trim();
     try {
@@ -40,6 +43,9 @@ class AuthController extends ChangeNotifier {
       } else {
         context.showError('Ocorreu um erro ${e.code}', context);
       }
+    } finally {
+      loading = false;
+      notifyListeners();
     }
     notifyListeners();
   }
@@ -59,6 +65,8 @@ class AuthController extends ChangeNotifier {
   }
 
   Future<void> registerUser(BuildContext context) async {
+    loading = true;
+    notifyListeners();
     try {
       UserCredential userCredential =
           await _firebaseAuth.createUserWithEmailAndPassword(
@@ -92,6 +100,9 @@ class AuthController extends ChangeNotifier {
       } else if (e.code == 'email-already-in-use') {
         context.showError('Este email já está cadastrado', context);
       }
+    } finally {
+      loading = false;
+      notifyListeners();
     }
   }
 

@@ -20,6 +20,9 @@ class _AuthPageState extends State<AuthPage> {
   @override
   void initState() {
     controller.startRepository();
+    controller.addListener(() {
+      setState(() {});
+    });
     super.initState();
   }
 
@@ -106,12 +109,22 @@ class _AuthPageState extends State<AuthPage> {
                               if (formValid) {
                                 controller.login(context);
                               } else {
-                                context.showWarning('Formulário Inválido', context);
+                                context.showWarning(
+                                    'Formulário Inválido', context);
                               }
                             },
-                            child: const Text(
-                              'Entrar',
-                              style: TextStyle(fontSize: 16),
+                            child: Visibility(
+                              visible: !controller.loading,
+                              replacement: const SizedBox(
+                                height: 25,
+                                width: 25,
+                                child: CircularProgressIndicator(
+                                    color: Colors.white),
+                              ),
+                              child: const Text(
+                                'Entrar',
+                                style: TextStyle(fontSize: 16),
+                              ),
                             ),
                           ),
                         ),

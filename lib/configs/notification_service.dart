@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 
 import 'package:app_mari/src/ui/styles/colors_app.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -73,7 +72,6 @@ class NotificationService {
       visibility: NotificationVisibility.public,
       enableVibration: true,
       playSound: true,
-      enableLights: true,
       category: AndroidNotificationCategory.social,
       color: ColorsApp.instance.primary,
     );

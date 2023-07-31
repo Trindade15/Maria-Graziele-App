@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:app_mari/src/helpers/size_extensions.dart';
 import 'package:app_mari/src/modules/auth/auth_controller.dart';
 import 'package:app_mari/src/modules/home/controller/home_controller.dart';
@@ -71,6 +69,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     Image.asset(
                       'assets/images/background-nature.jpg',
                       fit: BoxFit.cover,
+                      width: double.infinity,
                     ),
                     Positioned(
                       top: 55,
@@ -104,7 +103,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     ),
                     Positioned(
-                      top: 100,
+                      bottom: 10,
                       left: 20,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -149,12 +148,12 @@ class _SettingsPageState extends State<SettingsPage> {
                                 child: Text(
                                   'Trocar avatar',
                                   style: GoogleFonts.aBeeZee(
-                                      color: Colors.white,
-                                      backgroundColor: Colors.black26,
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: Colors.blue,
-                                      decorationStyle:
-                                          TextDecorationStyle.double),
+                                    color: Colors.white,
+                                    backgroundColor: Colors.black26,
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: Colors.blue,
+                                    decorationStyle: TextDecorationStyle.double,
+                                  ),
                                 ),
                               ),
                             ],

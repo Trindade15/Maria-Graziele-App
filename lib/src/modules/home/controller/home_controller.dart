@@ -56,6 +56,7 @@ class HomeController extends ChangeNotifier {
         'usuarioId': usuario['id'],
         'date': date,
         'hour': '${data.hour}:${data.minute}',
+        'comentario': null,
       },
     );
   }
@@ -69,7 +70,7 @@ class HomeController extends ChangeNotifier {
 
   pickAndUploadImage() async {
     XFile? file = await getImage(ImageSource.gallery);
- 
+
     try {
       if (file != null) {
         print('File: ${file.name}');
@@ -101,6 +102,14 @@ class HomeController extends ChangeNotifier {
     }
   }
 
+  addComentario(ImageDetailInterface detail, String comentario) {
+    db.collection('images').doc(detail.id).update({
+      'comentario': comentario.trim(),
+    });
+    Modular.to.navigate('/home-module/');
+    Modular.get<HomeStore>().getImages();
+  }
+
   Future<XFile?> getImage(ImageSource imageSource) async {
     final ImagePicker picker = ImagePicker();
     XFile? image = await picker.pickImage(source: imageSource);
@@ -108,7 +117,7 @@ class HomeController extends ChangeNotifier {
   }
 
   deleteImage(ImageDetailInterface detail) async {
-    var index = int.tryParse(detail.tag)!;
+    var index = int.tryParse(detail.tag)!; 
     images.removeAt(index);
     await storage.ref(detail.fullPath).delete();
     await db.collection('images').doc(detail.id).delete();
