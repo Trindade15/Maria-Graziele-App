@@ -1,5 +1,6 @@
 import 'package:app_mari/configs/app_setting.dart';
 import 'package:app_mari/configs/notification_service.dart';
+import 'package:app_mari/src/modules/album_photos/album_photos_module.dart';
 import 'package:app_mari/src/modules/auth/auth_controller.dart';
 import 'package:app_mari/src/modules/home/components/home_image_detail.dart';
 import 'package:app_mari/src/modules/home/controller/home_controller.dart';
@@ -20,7 +21,10 @@ class HomeModule extends Module {
   @override
   List<ModularRoute> get routes => [
         ChildRoute('/', child: (context, args) => const HomePage()),
-        ChildRoute('/home-detail',
-            child: (context, args) => HomeImageDetail(imageDetail: args.data)),
+        ChildRoute(
+          '/home-detail',
+          child: (context, args) => HomeImageDetail(imageDetail: args.data),
+        ),
+        ModuleRoute('album-photos-module', module: AlbumPhotosModule())
       ];
 }

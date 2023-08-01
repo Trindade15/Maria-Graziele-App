@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:app_mari/src/components/app_bar_component.dart';
 import 'package:app_mari/src/helpers/size_extensions.dart';
 import 'package:app_mari/src/modules/auth/auth_controller.dart';
 import 'package:app_mari/src/modules/home/components/home_image_detail.dart';
@@ -181,46 +184,65 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: Visibility(
         visible: controller.images.isNotEmpty,
-        child: FloatingActionButton(
-          backgroundColor: context.colors.primary,
-          onPressed: () => controller.pickAndUploadImage(),
-          child: Visibility(
-            visible: !controller.uploading,
-            replacement: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: CircularProgressIndicator(
-                    color: Colors.pink[200],
-                  ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            FloatingActionButton(
+              heroTag: 'bnt1',
+              backgroundColor: context.colors.primary,
+              onPressed: () {
+                Modular.to.pushNamed('/album-photos-module/');
+              },
+              
+              child: Icon(
+                Icons.photo_library,
+                color: Colors.pink[200],
+              ),
+            ),
+            const SizedBox(height: 16),
+            FloatingActionButton(
+              heroTag: 'bnt2',
+              backgroundColor: context.colors.primary,
+              onPressed: () => controller.pickAndUploadImage(),
+              child: Visibility(
+                visible: !controller.uploading,
+                replacement: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(
+                      height: 20,
+                      width: 20,
+                      child: CircularProgressIndicator(
+                        color: Colors.pink[200],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+                child: Icon(
+                  Icons.add_photo_alternate_rounded,
+                  color: Colors.pink[200],
+                ),
+              ),
             ),
-            child: Icon(
-              Icons.add_photo_alternate_rounded,
-              color: Colors.pink[200],
-            ),
-          ),
+          ],
         ),
       ),
     );
   }
 
   openImageItem(int index, Map img) {
-    print('Detail: $img');
     final image = ImageDetailInterface(
-        tag: index.toString(),
-        imagePath: img['imagePath'],
-        fullPath: img['fullPath'],
-        isFavorite: img['isFavorite'].toString(),
-        id: img['id'] ?? '',
-        usuarioId: img['usuarioId'],
-        date: img['date'],
-        hour: img['hour'],
-        controller: controller,
-        comentario: img['comentario']);
+      tag: index.toString(),
+      imagePath: img['imagePath'],
+      fullPath: img['fullPath'],
+      isFavorite: img['isFavorite'].toString(),
+      id: img['id'] ?? '',
+      usuarioId: img['usuarioId'],
+      date: img['date'],
+      hour: img['hour'],
+      controller: controller,
+      comentario: img['comentario'],
+    );
     Modular.to.pushNamed('/home/home-detail', arguments: image);
   }
 }

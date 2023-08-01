@@ -1,6 +1,7 @@
 import 'package:app_mari/configs/app_setting.dart';
 import 'package:app_mari/configs/notification_service.dart';
 import 'package:app_mari/firebase_messaging/firebase_messaging.dart';
+import 'package:app_mari/src/modules/album_photos/album_photos_module.dart';
 import 'package:app_mari/src/modules/auth/auth_module.dart';
 import 'package:app_mari/src/modules/cartas/cartas_module.dart';
 import 'package:app_mari/src/modules/favorite/favorite_module.dart';
@@ -32,6 +33,12 @@ class AppModule extends Module {
           '/settings',
           module: CartasModule(),
           transition: TransitionType.size,
+          duration: const Duration(seconds: 2),
+        ),
+        ModuleRoute(
+          '/album-photos-module',
+          module: AlbumPhotosModule(),
+          transition: TransitionType.fadeIn,
           duration: const Duration(seconds: 2),
         ),
       ];
