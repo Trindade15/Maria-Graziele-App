@@ -57,6 +57,7 @@ class HomeController extends ChangeNotifier {
         'date': date,
         'hour': '${data.hour}:${data.minute}',
         'comentario': null,
+        'user': {'avatarUrl': 'not-found'}
       },
     );
   }
@@ -117,7 +118,7 @@ class HomeController extends ChangeNotifier {
   }
 
   deleteImage(ImageDetailInterface detail) async {
-    var index = int.tryParse(detail.tag)!; 
+    var index = int.tryParse(detail.tag)!;
     images.removeAt(index);
     await storage.ref(detail.fullPath).delete();
     await db.collection('images').doc(detail.id).delete();

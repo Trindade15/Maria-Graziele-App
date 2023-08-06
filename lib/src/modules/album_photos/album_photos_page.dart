@@ -1,13 +1,16 @@
+import 'package:app_mari/src/components/app_bar_component.dart';
 import 'package:app_mari/src/helpers/size_extensions.dart';
 import 'package:app_mari/src/modules/album_photos/abum_photos_store.dart';
 import 'package:app_mari/src/modules/album_photos/controller/album_photos_controller.dart';
+import 'package:app_mari/src/modules/album_photos/models/album_model.dart';
+import 'package:app_mari/src/ui/styles/colors_app.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import '../home/components/layout_image.dart';
 
 class AlbumPhotosPage extends StatefulWidget {
   const AlbumPhotosPage({super.key});
@@ -18,6 +21,7 @@ class AlbumPhotosPage extends StatefulWidget {
 
 class _AlbumPhotosPageState extends State<AlbumPhotosPage> {
   late final AlbumStore store;
+  late AlbumModel albumModel;
   final controller = Modular.get<AlbumController>();
 
   @override
@@ -36,26 +40,7 @@ class _AlbumPhotosPageState extends State<AlbumPhotosPage> {
     );
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight),
-        child: Container(
-          alignment: Alignment.centerLeft,
-          padding: const EdgeInsets.only(left: 16),
-          child: SafeArea(
-            child: Row(
-              children: [
-                Image.asset(
-                  'assets/images/coroa.png',
-                  height: 32,
-                  width: 32,
-                ),
-                const SizedBox(width: 8),
-                Text('I and he', style: textStyle),
-              ],
-            ),
-          ),
-        ),
-      ),
+      appBar: const AppBarComponent(title: 'I and he'),
       body: Container(
         height: context.screenHeight,
         decoration: const BoxDecoration(
@@ -90,7 +75,6 @@ class _AlbumPhotosPageState extends State<AlbumPhotosPage> {
             );
           },
           onState: (context, SuccessAlbumState state) {
-            print('State: ${state.images.length}');
             return Visibility(
               visible: state.images.isNotEmpty,
               replacement: Align(
@@ -116,21 +100,12 @@ class _AlbumPhotosPageState extends State<AlbumPhotosPage> {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 20),
-                        // TextButton(
-                        //   onPressed: () {},
-                        //   child: Text(
-                        //     'Clique aqui',
-                        //     style: textStyle.copyWith(
-                        //       fontSize: 14,
-                        //       color: Colors.blue.shade700,
-                        //     ),
-                        //   ),
-                        // ),
                         ElevatedButton(
-                          onPressed: () => controller.pickAndUploadImage(),
+                          onPressed: controller.pickAndUploadImage,
                           style: const ButtonStyle(
-                              backgroundColor:
-                                  MaterialStatePropertyAll(Colors.indigo)),
+                            backgroundColor:
+                                MaterialStatePropertyAll(Colors.indigo),
+                          ),
                           child: Text(
                             'Clique aqui',
                             style: textStyle.copyWith(
@@ -146,13 +121,89 @@ class _AlbumPhotosPageState extends State<AlbumPhotosPage> {
               ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: LayoutImage(
-                  images: state.images,
-                  onPressed: (index) {},
+                child: MasonryGridView.builder(
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 6,
+                  gridDelegate:
+                      const SliverSimpleGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                  ),
+                  itemCount: state.images.length,
+                  physics: const ScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    albumModel = AlbumModel.fromMap(state.images[index]);
+                    return InkWell(
+                      onTap: () {
+                        Modular.to.pushNamed(
+                          './album-detail',
+                          arguments: albumModel,
+                        );
+                      },
+                      child: Hero(
+                        tag: index.toString(),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Stack(
+                            children: [
+                              Image.network(
+                                albumModel.imagePath,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Image.asset(
+                                    'assets/images/image-found.jpg',
+                                  );
+                                },
+                                fit: BoxFit.cover,
+                              ),
+                              Positioned(
+                                left: 4,
+                                top: 4,
+                                right: 4,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Visibility(
+                                      visible: albumModel.isFavorite == '1',
+                                      child: Icon(
+                                        Icons.favorite_rounded,
+                                        color: context.colors.secondary,
+                                        size: 25,
+                                      ),
+                                    ),
+                                    Container(
+                                      clipBehavior: Clip.hardEdge,
+                                      height: 32,
+                                      width: 32,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: Image.network(
+                                        albumModel.avatarUrl,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
             );
           },
+        ),
+      ),
+      floatingActionButton: Visibility(
+        visible: controller.images.isNotEmpty,
+        child: FloatingActionButton(
+          backgroundColor: const Color.fromRGBO(0, 44, 118, 0.8),
+          onPressed: controller.pickAndUploadImage,
+          child: const Icon(Icons.add, color: Colors.white),
         ),
       ),
     );

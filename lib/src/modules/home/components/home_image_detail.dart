@@ -290,6 +290,7 @@ class ImageDetailInterface {
   final String tag;
   final String imagePath;
   final String fullPath;
+  final String avatarUrl;
   final String date;
   final String hour;
   final String? comentario;
@@ -297,17 +298,19 @@ class ImageDetailInterface {
   final String id;
   final HomeController? controller;
   String isFavorite;
-  ImageDetailInterface(
-      {required this.tag,
-      required this.imagePath,
-      required this.fullPath,
-      required this.isFavorite,
-      required this.usuarioId,
-      required this.date,
-      required this.hour,
-      this.controller,
-      required this.id,
-      required this.comentario});
+  ImageDetailInterface({
+    required this.tag,
+    required this.imagePath,
+    required this.fullPath,
+    required this.isFavorite,
+    required this.usuarioId,
+    required this.date,
+    required this.hour,
+    this.controller,
+    required this.id,
+    required this.comentario,
+    required this.avatarUrl,
+  });
 
   @override
   String toString() =>

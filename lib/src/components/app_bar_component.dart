@@ -1,18 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class AppBarComponent extends StatefulWidget {
-  const AppBarComponent({super.key});
+class AppBarComponent extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
 
-  @override
-  State<AppBarComponent> createState() => _AppBarComponentState();
-}
+  const AppBarComponent({super.key, this.title = ''});
 
-class _AppBarComponentState extends State<AppBarComponent> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 40,
-      color: Colors.redAccent[100],
+    return AppBar(
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      leading: Image.asset(
+        'assets/images/coroa.png',
+        height: 32,
+        width: 32,
+      ),
+      titleSpacing: 0,
+      title: Text(
+        title,
+        style: GoogleFonts.gentiumBookBasic(
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+          color: Colors.white,
+        ),
+      ),
     );
   }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

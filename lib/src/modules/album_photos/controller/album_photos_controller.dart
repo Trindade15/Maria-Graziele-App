@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:app_mari/src/modules/album_photos/abum_photos_store.dart';
+import 'package:app_mari/src/modules/settings/settings_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class AlbumController extends ChangeNotifier {
   double total = 0;
   List<Reference> refs = [];
   List<Map<String, dynamic>> images = [];
+  var settingController = SettingsController();
 
   pickAndUploadImage() async {
     XFile? file = await getImage(ImageSource.gallery);

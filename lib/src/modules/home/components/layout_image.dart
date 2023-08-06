@@ -5,7 +5,13 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 class LayoutImage extends StatefulWidget {
   final List<Map> images;
   final Function(int index) onPressed;
-  const LayoutImage({super.key, required this.images, required this.onPressed});
+  final bool isAvatar;
+  const LayoutImage({
+    super.key,
+    required this.images,
+    required this.onPressed,
+    this.isAvatar = false,
+  });
 
   @override
   State<LayoutImage> createState() => _LayoutImageState();
@@ -39,18 +45,25 @@ class _LayoutImageState extends State<LayoutImage> {
                     },
                     fit: BoxFit.cover,
                   ),
-                  Visibility(
-                    visible: widget.images[index]['isFavorite'] == '1',
-                    child: Positioned(
-                      left: 10,
-                      top: 10,
-                      child: Icon(
-                        Icons.favorite_rounded,
-                        color: context.colors.secondary,
-                        size: 25,
-                      ),
+                  Positioned(
+                    left: 4,
+                    top: 4,
+                    right: 4,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Visibility(
+                          visible: widget.images[index]['isFavorite'] == '1',
+                          child: Icon(
+                            Icons.favorite_rounded,
+                            color: context.colors.secondary,
+                            size: 25,
+                          ),
+                        ),
+                       
+                      ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

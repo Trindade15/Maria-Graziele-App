@@ -14,18 +14,14 @@ class SettingsController extends ChangeNotifier {
   final FirebaseFirestore db = DbFirestore.get();
   final FirebaseStorage storage = FirebaseStorage.instance;
   Map avatar = {};
-
   bool uploading = false;
   double total = 0;
   Reference? ref;
 
-  Future<Map> getUser() async {
+  Future<Map<String, dynamic>> getUser() async {
     await Modular.get<AppSetting>().startSettings();
     var usuario = await Modular.get<AppSetting>().readLocale();
-    var snapshot = await firestore
-        .collection('usuarios')
-        .where('id', isEqualTo: usuario['id'])
-        .get();
+    var snapshot = await firestore.collection('usuarios').where('id', isEqualTo: usuario['id']).get();
     for (var usuario in snapshot.docs) {
       print('Usuario data: ${usuario.data()}');
     }

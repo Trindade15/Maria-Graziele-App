@@ -1,10 +1,7 @@
-import 'dart:async';
-import 'package:app_mari/configs/app_setting.dart';
 import 'package:flutter/services.dart';
 
 import 'package:app_mari/configs/notification_service.dart';
 import 'package:app_mari/firebase_messaging/firebase_messaging.dart';
-import 'package:app_mari/main.dart';
 import 'package:app_mari/src/ui/styles/colors_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';

@@ -85,7 +85,8 @@ class _FavoritePageState extends State<FavoritePage> {
                       usuarioId: favorites[index]['usuarioId'],
                       date: favorites[index]['date'],
                       hour: favorites[index]['hour'],
-                      comentario: favorites[index]['comentario']
+                      comentario: favorites[index]['comentario'],
+                      avatarUrl: 'assets/images/image-found.jpg',
                     );
                     Modular.to.pushNamed('./favorite-detail', arguments: detail);
                   },

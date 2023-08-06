@@ -29,6 +29,7 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     context.watch<AppSetting>().startSettings();
+    print('Passou aqui no Auth Page');
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
@@ -110,7 +111,9 @@ class _AuthPageState extends State<AuthPage> {
                                 controller.login(context);
                               } else {
                                 context.showWarning(
-                                    'Formulário Inválido', context);
+                                  'Formulário Inválido',
+                                  context,
+                                );
                               }
                             },
                             child: Visibility(

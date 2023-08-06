@@ -136,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                                 child: LayoutImage(
                                   images: state.images,
                                   onPressed: (int index) =>
-                                      openImageItem(index, state.images[index]),
+                                      openImageItem(index, state.images[index],),
                                 ),
                               ),
                             ),
@@ -242,6 +242,7 @@ class _HomePageState extends State<HomePage> {
       hour: img['hour'],
       controller: controller,
       comentario: img['comentario'],
+      avatarUrl: 'assets/images/image-found.jpg',
     );
     Modular.to.pushNamed('/home/home-detail', arguments: image);
   }

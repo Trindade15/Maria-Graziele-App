@@ -20,9 +20,12 @@ class _CheckAuthState extends State<CheckAuth> {
   void initState() {
     streamSubscription =
         FirebaseAuth.instance.authStateChanges().listen((User? user) {
+          print('Usuario: $user');
       if (user == null) {
+        print('Passou aqui no IF');
         Modular.to.navigate('./auth-page');
       } else {
+        print('Passou aqui');
         permission();
         Modular.to.navigate('/home-module/');
       }
@@ -54,12 +57,12 @@ class _CheckAuthState extends State<CheckAuth> {
   }
 
   permission() async {
+    await Permission.notification.request();
     var status = await Permission.notification.status;
     switch (status) {
       case PermissionStatus.denied:
-        await Permission.notification.request().then((value) {
-          if (status.isDenied) modalBotomShet();
-        });
+        modalBotomShet();
+
         break;
       case PermissionStatus.permanentlyDenied:
         modalBotomShet();
